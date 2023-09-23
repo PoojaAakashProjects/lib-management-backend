@@ -45,7 +45,7 @@ const getBooksList = async (req, res) => {
                 case "contains":
                     query[filteredData.attribute] = { $regex: new RegExp(filteredData.value, "i") };
                     break;
-                case "equal":
+                case "equals":
                     query[filteredData.attribute] = filteredData.value;
                     break;
                 case "not equal":
@@ -56,13 +56,13 @@ const getBooksList = async (req, res) => {
             }
             data = await books.find(query)
                 .skip(skipCount)
-                .limit(parsedPageSize);
+                .limit(parsedPageSize).sort({"updatedAt":"-1"});
             totalCount = await books.find(query).countDocuments();
 
         } else {
             data = await books.find()
                 .skip(skipCount)
-                .limit(parsedPageSize);
+                .limit(parsedPageSize).sort({"updatedAt":"-1"});
             totalCount = await books.countDocuments();
         }
 
